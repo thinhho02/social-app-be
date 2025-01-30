@@ -7,6 +7,7 @@ import connectDB from "./config/db";
 import creatorRoute from "./routes/creator.route";
 import categoryRoute from "./routes/category.route";
 import tagRoute from "./routes/tag.route";
+import Category from "./model/category.model";
 
 
 const port = process.env.PORT || 3001
@@ -21,8 +22,18 @@ app.use(cors({
     credentials: true
 }))
 
-app.get("/", (req, res) => {
-    res.send("connec");
+app.get("/", async (req, res) => {
+    const limit = parseInt(req.query.limit as string) || 0
+
+    const listCategory = await Category.find().limit(limit).populate({
+        path: "creators",
+        select: "-createdAt -updatedAt"
+    }).exec()
+
+    res.status(200).json({
+        message: "List categories fetched successfully",
+        data: listCategory,
+    });
 })
 
 // routers
