@@ -21,6 +21,9 @@ app.use(cors({
     credentials: true
 }))
 
+app.get("/", (req, res) => {
+    res.send("connec");
+})
 
 // routers
 app.use("/creator", creatorRoute);
@@ -29,7 +32,6 @@ app.use("/tag", tagRoute);
 
 // middleware error handler
 app.use(errorHandler)
-
 app.listen(port, async () => {
     console.log(`server running listen port ${port}`);
     await connectDB()
