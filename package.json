@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
-    "start": "nodemon src/index.ts"
+    "start": "nodemon dist/index.js"
   },
   "keywords": [],
   "author": "",
