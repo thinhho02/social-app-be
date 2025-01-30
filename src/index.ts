@@ -34,6 +34,6 @@ app.listen(port, async () => {
     console.log(`server running listen port ${port}`);
     await connectDB()
 })
-app.get("/", (req,res)=>{
-    res.send("connect")
-})
+
+
+export default app
