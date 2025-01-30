@@ -22,18 +22,8 @@ app.use(cors({
     credentials: true
 }))
 
-app.get("/", async (req, res) => {
-    const limit = parseInt(req.query.limit as string) || 0
-
-    const listCategory = await Category.find().limit(limit).populate({
-        path: "creators",
-        select: "-createdAt -updatedAt"
-    }).exec()
-
-    res.status(200).json({
-        message: "List categories fetched successfully",
-        data: listCategory,
-    });
+app.get("/", (req, res) => {
+   res.send("connect")
 })
 
 // routers
