@@ -12,11 +12,11 @@ import mongoose from "mongoose";
 
 const port = process.env.PORT || 3001
 const app = express();
-const uri = process.env.MONGODB_URI || "";
-if (uri == "") {
-    throw new Error("Error connecting to MongoDB")
-}
-mongoose.connect(uri).catch(error => console.log(error))
+// const uri = process.env.MONGODB_URI || "";
+// if (uri == "") {
+//     throw new Error("Error connecting to MongoDB")
+// }
+// mongoose.connect(uri).catch(error => console.log(error))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
