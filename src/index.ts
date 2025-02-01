@@ -7,7 +7,6 @@ import connectDB from "./config/db";
 import creatorRoute from "./routes/creator.route";
 import categoryRoute from "./routes/category.route";
 import tagRoute from "./routes/tag.route";
-import Category from "./model/category.model";
 
 
 const port = process.env.PORT || 3001
@@ -21,6 +20,10 @@ app.use(cors({
     origin: process.env.ORIGIN_PATH_FRONTEND || "*",
     credentials: true
 }))
+app.listen(port, async () => {
+    console.log(`server running listen port ${port}`);
+    await connectDB()
+})
 
 app.get("/", (req, res) => {
    res.send("connect")
@@ -33,10 +36,6 @@ app.use("/tag", tagRoute);
 
 // middleware error handler
 app.use(errorHandler)
-app.listen(port, async () => {
-    console.log(`server running listen port ${port}`);
-    await connectDB()
-})
 
 
 export default app
