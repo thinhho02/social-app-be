@@ -11,11 +11,6 @@ import mongoose from "mongoose";
 
 
 const port = process.env.PORT || 3001
-const uri = process.env.MONGODB_URI || "";
-if (uri == "") {
-    throw new Error("Error connecting to MongoDB")
-}
-mongoose.connect(uri).then(res => console.log("MongoDB connected!")).catch(error => process.exit(1))
 
 const app = express();
 
@@ -27,10 +22,6 @@ app.use(cors({
     credentials: true
 }))
 
-app.get("/", (req, res) => {
-    res.send("connect")
-})
-
 // routers
 app.use("/creator", creatorRoute);
 app.use("/category", categoryRoute);
@@ -38,9 +29,11 @@ app.use("/tag", tagRoute);
 
 // middleware error handler
 app.use(errorHandler)
-app.listen(port, () => {
-    console.log(`server running listen port ${port}`);
-})
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.log(`server running listen port ${port}`);
+    })
+}).catch(error => process.exit(1))
 
 
 export default app
