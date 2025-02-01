@@ -11,12 +11,13 @@ import mongoose from "mongoose";
 
 
 const port = process.env.PORT || 3001
+const uri = process.env.MONGODB_URI || "";
+if (uri == "") {
+    throw new Error("Error connecting to MongoDB")
+}
+mongoose.connect(uri).then(res => console.log("MongoDB connected!")).catch(error => process.exit(1))
+
 const app = express();
-// const uri = process.env.MONGODB_URI || "";
-// if (uri == "") {
-//     throw new Error("Error connecting to MongoDB")
-// }
-// mongoose.connect(uri).catch(error => console.log(error))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,9 +38,8 @@ app.use("/tag", tagRoute);
 
 // middleware error handler
 app.use(errorHandler)
-app.listen(port, async () => {
+app.listen(port, () => {
     console.log(`server running listen port ${port}`);
-    await connectDB()
 })
 
 
