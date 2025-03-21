@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const connectDB = async (): Promise<void> => {
   try {
-    const uri = process.env.MONGODB_URI || "";
+    const uri = process.env.MONGO_CONNECTION_DB || "";
     if (uri == "") {
       throw new Error("Error connecting to MongoDB")
     }

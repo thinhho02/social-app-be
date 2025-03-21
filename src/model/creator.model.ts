@@ -5,7 +5,6 @@ import Tag from "./tag.model";
 enum CreatorStatus {
   ACTIVE = "active",
   PENDING = "pending",
-  DETELE = "delete"
 }
 
 interface ICreator extends mongoose.Document {
