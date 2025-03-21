@@ -17,7 +17,7 @@ export const createNewCategory = catchError(async (req, res) => {
         name: parsedData.name,
         creators: parsedData.creators
     });
-    if(req.file?.size){
+    if (req.file?.size) {
         await processImage(newCategory, req.file.buffer, 'mediaUrl')
     }
     await generateSlug(newCategory, Category, "name", parsedData.name)
@@ -32,10 +32,12 @@ export const createNewCategory = catchError(async (req, res) => {
 
 export const getCategoryBySlug = catchError(async (req, res) => {
     const { slug } = req.params;
+    const condition = (req.query.status as string) ? { status: req.query.status } : {};
 
-    const category = await Category.findOne({slug})
+    const category = await Category.findOne({ slug })
         .populate({
             path: "creators",
+            match: condition,
             select: "-createdAt -updatedAt",
         })
         .exec();
@@ -52,10 +54,12 @@ export const getCategoryBySlug = catchError(async (req, res) => {
 
 export const getCategoryByID = catchError(async (req, res) => {
     const { id } = req.params;
+    const condition = (req.query.status as string) ? { status: req.query.status } : {};
 
     const category = await Category.findById(id)
         .populate({
             path: "creators",
+            match: condition,
             select: "-createdAt -updatedAt",
         })
         .exec();
@@ -72,9 +76,11 @@ export const getCategoryByID = catchError(async (req, res) => {
 
 export const getListCategory = catchError(async (req, res) => {
     const limit = parseInt(req.query.limit as string) || 0
+    const condition = (req.query.status as string) ? { status: req.query.status } : {};
 
     const listCategory = await Category.find().limit(limit).populate({
         path: "creators",
+        match: condition,
         select: "-createdAt -updatedAt"
     }).exec()
 
@@ -92,7 +98,7 @@ export const updateCategory = catchError(async (req, res) => {
     if (!oldCategory) {
         return res.status(404).json({ message: "Category not found" });
     }
-    
+
     const parsedData = CategorySchemaZod.partial().parse(req.body);
     const newCategory = new Category(parsedData);
     if (parsedData.name && parsedData.name !== oldCategory.name) {
@@ -101,7 +107,7 @@ export const updateCategory = catchError(async (req, res) => {
         parsedData.name = newCategory.name
     }
 
-    if(req.file?.size){
+    if (req.file?.size) {
         await processImage(newCategory, req.file.buffer, 'mediaUrl')
         parsedData.mediaUrl = newCategory.mediaUrl
     }

@@ -45,9 +45,11 @@ export const getAllTags = catchError(async (req, res) => {
 
 export const getTagBySlug = catchError(async (req, res) => {
     const { slug } = req.params;
+    const condition = (req.query.status as string) ? { status: req.query.status } : {};
 
     const tag = await Tag.findOne({ slug }).populate({
         path: "creators",
+        match: condition,
         select: "-createdAt -updatedAt",
     }).exec();
 
@@ -63,10 +65,12 @@ export const getTagBySlug = catchError(async (req, res) => {
 
 export const getTagByID = catchError(async (req, res) => {
     const { id } = req.params;
+    const condition = (req.query.status as string) ? { status: req.query.status } : {};
 
     const tag = await Tag.findById(id)
         .populate({
             path: "creators",
+            match: condition,
             select: "-createdAt -updatedAt",
         })
         .exec();
@@ -128,9 +132,6 @@ export const hotTag = catchError(async (req, res) => {
     })
         .sort({ views: -1 })
         .limit(limit)
-        .populate([
-            { path: "creators", select: "-createdAt -updatedAt" },
-        ])
         .exec();
 
     res.status(200).json({

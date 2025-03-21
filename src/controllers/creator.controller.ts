@@ -12,7 +12,7 @@ const CreatorSchemaZod = z.object({
     category: z.string().min(1, "At least one category is required"),
     tags: z.string().array().optional(),
     mediaUrl: z.string().optional(),
-    status: z.enum(["active", "delete", "pending"]),
+    status: z.enum(["active", "pending"]),
     slug: z.string().optional()
 })
 
